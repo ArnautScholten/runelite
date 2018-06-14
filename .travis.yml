@@ -6,10 +6,12 @@ cache:
     - $HOME/.m2
 jdk:
 - oraclejdk8
+-script: mvn clean install
++script: mvn clean checkstyle:checkstyle findbugs:findbugs install
+
 install: true
 script: ./travis/build.sh
 notifications:
   irc: "irc.rizon.net#runelite"
-after_success:
-    - ./travis/post_build.sh
+
     
