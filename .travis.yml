@@ -6,7 +6,6 @@ cache:
     - $HOME/.m2
 jdk:
 - oraclejdk8
--script: mvn clean install
 +script: mvn clean checkstyle:checkstyle findbugs:findbugs install
 
 install: true
