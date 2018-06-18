@@ -10,7 +10,7 @@ jdk:
 install: true
 script: ./travis/build.sh
 after_success:
-script: mvn clean checkstyle:checkstyle findbugs:findbugs install
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   irc: "irc.rizon.net#runelite"
 
