@@ -8,10 +8,26 @@ jdk:
 - oraclejdk8
 
 install: true
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "qtvDC+WA96BBV09edSKyGSK3p4bzO7IutHneVTY+rLE6FeCb3QsNmtM6/SoiPzIJc7esokIWJ0RYbOKky/G0DHC5cLTX0yTc/AmnUPJhfEVuXRzqGpHHgVB4WG6RzTP35vGE0i7KdIMoPZyHk8eBAUDeCLvAWn3PpeIreqI0fEBz5NOqGwHbkJHfTzXDqNKmaTRm91gXYnPJXjOgFYtAkbS+tF9meAJNcuDbyDRlbSCWPE5fwZv6RU2QHWN8/SKQZHAOImQVm92Zqyt12Xc7+Ztd72vNykWrVA9SQtxXM+57tqYx2IuZqr/jwXPglwQGTbLnd18P6adbSTSuCoA47h+whFrzCTo2orOOblZDfX0YHBMVybqG7G3xjl/z1CdsMnXMTatsEjSYJgrnqtkZOvLsBZSBzxPENDwTTmhBrkQ/m506zaVkV5+SwfiBgb+wlBoK1J8XX16ul1OiFrUIDi6SVq298Lv76bNLuZbBNqBjnbVXrAzZZHssYKAMgaCnsNpJUEs5qCccsAvY0gkGNw9Z9yYQ5WcI0EiwR5KtcfqoyRXYiGmA79UdoHQoMJoxW/JvAmiIDGtY5WKZetGYvzK04BEkEb5NFY2QufZh+KCxYBvsMf8VyxAYi8ziLCkYwddphyIFQeknUWg4X82knYoJNNxhYAbrC0yP6VMveTM="
+
+before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "ArnautScholten/runelite"
+      description: "<Your project description here>"
+    notification_email: a.scholten@student.utwente.nl
+    build_command: mvn clean
+    branch_pattern: coverity_scan
+
 script: ./travis/build.sh
-after_success:
-script: mvn clean checkstyle:checkstyle findbugs:findbugs install
+
 notifications:
   irc: "irc.rizon.net#runelite"
-
-    
