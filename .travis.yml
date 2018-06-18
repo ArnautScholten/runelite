@@ -24,7 +24,7 @@ addons:
       name: "ArnautScholten/runelite"
       description: "<Your project description here>"
     notification_email: a.scholten@student.utwente.nl
-    build_command: mvn clean
+    build_command: "mvn clean install --settings travis/settings.xml"
     branch_pattern: coverity_scan
 
 script: ./travis/build.sh
