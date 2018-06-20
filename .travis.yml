@@ -8,9 +8,18 @@ jdk:
 - oraclejdk8
 
 install: true
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script: ./travis/build.sh
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+addons:
+  code_climate:
+    repo_token:
+      secure: "fQ6F0Q5ulrc0igpWVaFZHMhdKftiUuBjNXZ1W4O7NgXahPPRdmYSoayENo9+ZXXfM5s8hGsdxQngeKcwYb99N3QUeLFfHkK/ZcQ2avQPaPZVmwAdVpfzqb0PAKt8eV8+oWdpmJGxdQBPzy65REon+qVaoS8X6C1kXKLeCWoRN1ik16RtDeCjLm3zPc/hrffGFfCEQnLrrP3tAn3mPyuxSy+izmG1go2E6MJCSsjCtyzLns8kVdFUn1/UovMjyCzDCVOUXSYNKt2naTJLdxJ7YNmmT2CLdEvC1BD8qufggGmgG5R1vkbreGko60QnE1gGcOppSuuADe7BVYV2EFqG25Jg87mlArB1UwArfi8sghppbsPL5LgoqXr1G8Ko5JyoA9dZH7w13YLkJGOmcGe+J87o4+P5UBH08ckOO1nrILSMBcZHQq34e/qTpE+ZSWJKON0NLO4w/GHoTDwlgDitRudS3vzzHGXGBwoROkkUbyUW2B8EJQQoCVZdi8+MIg8Ezf+BHxsWo5Zj1Nm5Fc64RDG03WqUOzV+FevCnGCaDtzCULZ0/baKyOYE8HTlK46QkX5IGlMMrjgxD22lvm/q/iH2FfSENCe5nSgN4G1uArv4Dmd4GPH3jLiqhJ6A29w+Hs1QS3xx1AFIJGQmaQby5f3d1NQ3ooVt15qo6kLvOyM="
+
 notifications:
   irc: "irc.rizon.net#runelite"
 
