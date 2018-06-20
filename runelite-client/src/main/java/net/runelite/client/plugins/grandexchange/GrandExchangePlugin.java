@@ -247,6 +247,7 @@ public class GrandExchangePlugin extends Plugin
 			case WidgetID.BANK_INVENTORY_GROUP_ID:
 				menuEntry.setOption("Search Grand Exchange");
 				client.setMenuEntries(entries);
+				break;
 		}
 	}
 
