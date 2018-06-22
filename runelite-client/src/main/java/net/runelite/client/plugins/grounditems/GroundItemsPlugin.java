@@ -385,56 +385,7 @@ public class GroundItemsPlugin extends Plugin
 				return;
 			}
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-			int quantity = 1;
-			Node current = itemLayer.getBottom();
-
-			while (current instanceof Item)
-			{
-				Item item = (Item) current;
-				if (item.getId() == itemId)
-				{
-					quantity = item.getQuantity();
-				}
-				current = current.getNext();
-			}
-
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final ItemPrice itemPrice = itemManager.getItemPriceAsync(realItemId);
-			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
-			final int gePrice = quantity * price;
-			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
-			final Color color = getItemColor(highlighted, hidden);
-
-			if (color != null && hidden == null && !color.equals(config.defaultColor()))
-			{
-				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
-				String colTag = "<col=" + hexColor + ">";
-				final MenuHighlightMode mode = config.menuHighlightMode();
-
-				if (mode == BOTH || mode == OPTION)
-				{
-					lastEntry.setOption(colTag + "Take");
-				}
-
-				if (mode == BOTH || mode == NAME)
-				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(colTag + target);
-				}
-			}
-
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
-			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-			}
-
-			client.setMenuEntries(menuEntries);
+			new MenuEntryUpdater(itemId, itemLayer).invoke();
 		}
 	}
 
@@ -522,6 +473,72 @@ public class GroundItemsPlugin extends Plugin
 		if (!focusChanged.isFocused())
 		{
 			setHotKeyPressed(false);
+		}
+	}
+
+	private class MenuEntryUpdater {
+		private int itemId;
+		private ItemLayer itemLayer;
+
+		private MenuEntryUpdater(int itemId, ItemLayer itemLayer) {
+			this.itemId = itemId;
+			this.itemLayer = itemLayer;
+		}
+
+		private void invoke() {
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			Node current = itemLayer.getBottom();
+			int quantity = getItemQuantity(current);
+
+			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
+			final ItemPrice itemPrice = itemManager.getItemPriceAsync(realItemId);
+			final int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
+			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+			final int gePrice = quantity * price;
+			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
+			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
+			final Color color = getItemColor(highlighted, hidden);
+
+			if (color != null && hidden == null && !color.equals(config.defaultColor()))
+			{
+				String hexColor = Integer.toHexString(color.getRGB() & 0xFFFFFF);
+				String colTag = "<col=" + hexColor + ">";
+				final MenuHighlightMode mode = config.menuHighlightMode();
+
+				if (mode == BOTH || mode == OPTION)
+				{
+					lastEntry.setOption(colTag + "Take");
+				}
+
+				if (mode == BOTH || mode == NAME)
+				{
+					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+					lastEntry.setTarget(colTag + target);
+				}
+			}
+
+			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+			{
+				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+			}
+
+			client.setMenuEntries(menuEntries);
+		}
+
+		private int getItemQuantity(Node current) {
+			int quantity = 1;
+			while (current instanceof Item)
+			{
+				Item item = (Item) current;
+				if (item.getId() == itemId)
+				{
+					quantity = item.getQuantity();
+				}
+				current = current.getNext();
+			}
+			return quantity;
 		}
 	}
 }
