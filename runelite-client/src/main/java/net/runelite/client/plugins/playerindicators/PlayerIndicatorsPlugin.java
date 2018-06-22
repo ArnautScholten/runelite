@@ -84,6 +84,21 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 
+	private boolean typeConditions(int type)
+	{
+		return type == FOLLOW.getId() || type == TRADE.getId()
+				|| type == SPELL_CAST_ON_PLAYER.getId()
+				|| type == ITEM_USE_ON_PLAYER.getId()
+				|| type == PLAYER_FIRST_OPTION.getId()
+				|| type == PLAYER_SECOND_OPTION.getId()
+				|| type == PLAYER_THIRD_OPTION.getId()
+				|| type == PLAYER_FOURTH_OPTION.getId()
+				|| type == PLAYER_FIFTH_OPTION.getId()
+				|| type == PLAYER_SIXTH_OPTION.getId()
+				|| type == PLAYER_SEVENTH_OPTION.getId()
+				|| type == PLAYER_EIGTH_OPTION.getId();
+	}
+
 	@Subscribe
 	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
 	{
@@ -95,16 +110,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 
 		int identifier = menuEntryAdded.getIdentifier();
-		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-			|| type == PLAYER_FIRST_OPTION.getId()
-			|| type == PLAYER_SECOND_OPTION.getId()
-			|| type == PLAYER_THIRD_OPTION.getId()
-			|| type == PLAYER_FOURTH_OPTION.getId()
-			|| type == PLAYER_FIFTH_OPTION.getId()
-			|| type == PLAYER_SIXTH_OPTION.getId()
-			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId())
+		if (typeConditions(type))
 		{
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
