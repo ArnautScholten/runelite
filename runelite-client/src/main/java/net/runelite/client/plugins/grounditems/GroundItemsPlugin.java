@@ -476,16 +476,19 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private class MenuEntryUpdater {
+	private class MenuEntryUpdater
+	{
 		private int itemId;
 		private ItemLayer itemLayer;
 
-		private MenuEntryUpdater(int itemId, ItemLayer itemLayer) {
+		private MenuEntryUpdater(int itemId, ItemLayer itemLayer)
+		{
 			this.itemId = itemId;
 			this.itemLayer = itemLayer;
 		}
 
-		private void invoke() {
+		private void invoke()
+		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 			Node current = itemLayer.getBottom();
@@ -527,7 +530,8 @@ public class GroundItemsPlugin extends Plugin
 			client.setMenuEntries(menuEntries);
 		}
 
-		private int getItemQuantity(Node current) {
+		private int getItemQuantity(Node current)
+		{
 			int quantity = 1;
 			while (current instanceof Item)
 			{
