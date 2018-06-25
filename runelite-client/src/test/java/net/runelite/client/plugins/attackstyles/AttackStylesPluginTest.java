@@ -103,7 +103,7 @@ public class AttackStylesPluginTest
 		attackPlugin.onAttackStyleChange(new VarbitChanged());
 		warnedSkills = attackPlugin.getWarnedSkills();
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
-		assertTrue(attackPlugin.isWarnedSkillSelected());
+		assertFalse(attackPlugin.isWarnedSkillSelected());
 	}
 
 	/*

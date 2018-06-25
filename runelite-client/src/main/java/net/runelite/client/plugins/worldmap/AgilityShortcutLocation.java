@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum AgilityShortcutLocation
+public enum AgilityShortcutLocation
 {
 	KARAMJA_GLIDER_LOG("Log Balance", 1, new WorldPoint(2906, 3050, 0)),
 	FALADOR_CRUMBLING_WALL("Crumbling Wall", 5, new WorldPoint(2936, 3357, 0)),

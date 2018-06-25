@@ -34,8 +34,10 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.plugins.worldmap.AgilityShortcutLocation;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -95,6 +97,25 @@ public class AgilityOverlay extends Overlay
 					if (config.highlightMarks() && markOfGrace != null)
 					{
 						configColor = config.getMarkColor();
+					}
+
+
+					for (AgilityShortcutLocation obstacle: AgilityShortcutLocation.values())
+					{
+						if (obstacle.getLocation().distanceTo2D(object.getWorldLocation()) < 3)
+						{
+							//System.out.println(obstacle.getLocation().distanceTo2D(object.getWorldLocation()));
+							//configColor = Color.BLUE;
+
+							if (client.getRealSkillLevel(Skill.AGILITY) < obstacle.getLevelReq())
+							{
+								configColor = Color.RED;
+							}
+							else if (client.getBoostedSkillLevel(Skill.AGILITY) < obstacle.getLevelReq())
+							{
+								configColor = Color.ORANGE;
+							}
+						}
 					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
