@@ -182,6 +182,10 @@ public class ChatNotificationsPlugin extends Plugin
 			while (matcher.find())
 			{
 				String value = matcher.group();
+				if (config.highlightUpperCase())
+				{
+					value = value.toUpperCase();
+				}
 				if (config.highlightColorRed())
 				{
 					matcher.appendReplacement(stringBuffer, "<col=" + RED + ">" + value + "<col" + ChatColorType.NORMAL + ">");

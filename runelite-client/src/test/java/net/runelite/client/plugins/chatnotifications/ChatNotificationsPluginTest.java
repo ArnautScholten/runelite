@@ -93,8 +93,6 @@ public class ChatNotificationsPluginTest
 	public void onSetRedMessage()
 	{
 		when(config.highlightWordsString()).thenReturn("test");
-
-		when(config.highlightOwnName()).thenReturn(true);
 		when(config.highlightColorRed()).thenReturn(true);
 
 		MessageNode messageNode = mock(MessageNode.class);
@@ -108,5 +106,25 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onSetMessage(setMessage);
 
 		verify(messageNode).setValue("<col=ff0000>test<colNORMAL>, <col=ff0000>test<colNORMAL> value");
+	}
+
+	@Test
+	public void onSetUpperCaseMessage()
+	{
+		when(config.highlightWordsString()).thenReturn("test");
+
+		when(config.highlightUpperCase()).thenReturn(true);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("test, test value");
+
+		SetMessage setMessage = new SetMessage();
+		setMessage.setType(ChatMessageType.PUBLIC);
+		setMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onSetMessage(setMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>TEST<colNORMAL>, <colHIGHLIGHT>TEST<colNORMAL> value");
 	}
 }

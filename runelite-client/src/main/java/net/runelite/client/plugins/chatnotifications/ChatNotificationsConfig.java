@@ -112,4 +112,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "highlightUpperCase",
+			name = "Highlight in upper case",
+			description = "Highlights selected words in upper case"
+	)
+	default boolean highlightUpperCase()
+	{
+		return false;
+	}
 }
