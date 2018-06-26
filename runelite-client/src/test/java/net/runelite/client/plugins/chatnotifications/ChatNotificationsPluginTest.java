@@ -88,4 +88,25 @@ public class ChatNotificationsPluginTest
 
 		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
 	}
+
+	@Test
+	public void onSetRedMessage()
+	{
+		when(config.highlightWordsString()).thenReturn("test");
+
+		when(config.highlightOwnName()).thenReturn(true);
+		when(config.highlightColorRed()).thenReturn(true);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("test, test value");
+
+		SetMessage setMessage = new SetMessage();
+		setMessage.setType(ChatMessageType.PUBLIC);
+		setMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onSetMessage(setMessage);
+
+		verify(messageNode).setValue("<col=ff0000>test<colNORMAL>, <col=ff0000>test<colNORMAL> value");
+	}
 }

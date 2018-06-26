@@ -101,4 +101,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "highlightColorRed",
+			name = "Highlight in red",
+			description = "Highlights selected words in red"
+	)
+	default boolean highlightColorRed()
+	{
+		return false;
+	}
 }

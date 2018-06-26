@@ -73,6 +73,7 @@ public class ChatNotificationsPlugin extends Plugin
 	private Pattern usernameMatcher = null;
 	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
+	private String RED = "ff0000";
 
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
@@ -181,7 +182,14 @@ public class ChatNotificationsPlugin extends Plugin
 			while (matcher.find())
 			{
 				String value = matcher.group();
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
+				if (config.highlightColorRed())
+				{
+					matcher.appendReplacement(stringBuffer, "<col=" + RED + ">" + value + "<col" + ChatColorType.NORMAL + ">");
+				}
+				else
+				{
+					matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + ">" + value + "<col" + ChatColorType.NORMAL + ">");
+				}
 				update = true;
 				found = true;
 			}
