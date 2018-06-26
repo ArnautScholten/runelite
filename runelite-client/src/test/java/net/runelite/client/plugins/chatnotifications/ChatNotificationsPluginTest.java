@@ -127,4 +127,24 @@ public class ChatNotificationsPluginTest
 
 		verify(messageNode).setValue("<colHIGHLIGHT>TEST<colNORMAL>, <colHIGHLIGHT>TEST<colNORMAL> value");
 	}
+
+	@Test
+	public void onRemoveMessage()
+	{
+		when(config.highlightWordsString()).thenReturn("test");
+
+		when(config.removeHighlight()).thenReturn(true);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("test, test value");
+
+		SetMessage setMessage = new SetMessage();
+		setMessage.setType(ChatMessageType.PUBLIC);
+		setMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onSetMessage(setMessage);
+
+		verify(messageNode).setValue("");
+	}
 }

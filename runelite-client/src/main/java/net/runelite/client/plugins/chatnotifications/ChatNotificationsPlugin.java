@@ -201,8 +201,14 @@ public class ChatNotificationsPlugin extends Plugin
 			if (found)
 			{
 				matcher.appendTail(stringBuffer);
-				messageNode.setValue(stringBuffer.toString());
-
+				if (config.removeHighlight())
+				{
+					messageNode.setValue("");
+				}
+				else
+				{
+					messageNode.setValue(stringBuffer.toString());
+				}
 				if (config.notifyOnHighlight())
 				{
 					sendNotification(event);

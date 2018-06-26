@@ -123,4 +123,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 8,
+			keyName = "removeHighlight",
+			name = "Removes sentences with higlights",
+			description = "Removes sentences with higlights"
+	)
+	default boolean removeHighlight()
+	{
+		return false;
+	}
 }
